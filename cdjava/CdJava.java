@@ -1,0 +1,86 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class CdJava {
+  protected CdJava() {}
+
+  /* Creates a string representing the path based on path1 which represents the current directory
+     and path2 which represents the new directory
+   */
+  protected String makeString(String path1, String path2) {
+    Scanner breakPath = new Scanner(path1 + "/" + path2);
+    breakPath.useDelimiter("/");
+
+    List<String> parts = new ArrayList<String>();
+
+    while (breakPath.hasNext()) {
+      String part = breakPath.next();
+      for (int i = 0; i < parts.size(); i++) {
+        String s = parts.get(i);
+        if (part.equals(s)) {
+          parts = parts.subList(0, i);
+          break;
+        }
+      }
+      switch (part) {
+        case ".":
+          break;
+        case "..":
+          if (parts.size() > 0) {
+            parts.remove(parts.size() - 1);
+          }
+          break;
+        case "":
+          if (!breakPath.hasNext()) {
+            parts.clear();
+          }
+          break;
+        default:
+          parts.add(part);
+          break;
+      }
+    }
+
+    String finalPath = "";
+    if (parts.size() == 0) {
+      finalPath = "/";
+    }
+    else if (parts.size() == 1) {
+      finalPath = parts.get(0);
+    }
+    else {
+      finalPath = parts.get(0);
+      for (int i = 1; i < parts.size(); i++) {
+        finalPath = finalPath + "/" + parts.get(i);
+      }
+    }
+
+    return finalPath;
+  }
+
+  // Checks if the file path exists an returns an error message if not
+  protected String makePath(String pathString, String path2) {
+    Path newPath = Paths.get(pathString);
+    if (Files.exists(newPath)) {
+      return newPath.toString();
+    }
+    else {
+      return path2 + ": No such file or directory";
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner scanInput = new Scanner(System.in);
+    String path1 = scanInput.next();
+    String path2 = scanInput.next();
+
+    CdJava cj = new CdJava();
+    String pathString = cj.makeString(path1, path2);
+    String finalString = cj.makePath(pathString, path2);
+    System.out.println(finalString);
+  }
+}
