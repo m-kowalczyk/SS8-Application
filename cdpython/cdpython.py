@@ -1,13 +1,3 @@
-# Takes in two inputs from the command line with path1 representing the
-# current directory and path2 representing the new directory, exits the
-# program if the number of inputs is incorrect
-try:
-    path1, path2 = input().split()
-except ValueError:
-    print("Too many/few inputs")
-    exit()
-
-
 def make_path(p1, p2):
     # creates a list of the elements in the new path based on p1 and p2,
     # where "." means staying in the current directory, ".." means returning
@@ -36,11 +26,24 @@ def make_path(p1, p2):
                 if s.isalnum() or s == "." or s == "..":
                     new_path_str = new_path_str + "/" + s
                 else:
-                    new_path_str = path2 + ": No such file or directory"
+                    new_path_str = p2 + ": No such file or directory"
             return new_path_str
         else:
             return "/"
 
 
-print(make_path(path1, path2))
+# Takes in two inputs from the command line with path1 representing the
+# current directory and path2 representing the new directory, exits the
+# program if the number of inputs is incorrect
+def main():
+    try:
+        path1, path2 = input().split()
+    except ValueError:
+        print("Too many/few inputs")
+        exit()
+    print(make_path(path1, path2))
+
+
+if __name__ == "__main__":
+    main()
 
