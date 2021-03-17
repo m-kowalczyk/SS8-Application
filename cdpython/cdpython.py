@@ -1,5 +1,3 @@
-from pathlib import Path
-
 # Takes in two inputs from the command line with path1 representing the
 # current directory and path2 representing the new directory, exits the
 # program if the number of inputs is incorrect
@@ -30,19 +28,19 @@ def make_path(p1, p2):
         else:
             final_path.append(p)
     else:
-        # creates a path and checks if it exists, returning the path if it
+        # creates a path and checks if it is made up of valid character, returning the path if it
         # does or an error message if it doesn't
         if final_path:
-            new_path_str = final_path[0]
-            for p in final_path[1:]:
-                new_path_str = new_path_str + "/" + p
-            new_path = Path(new_path_str)
-            if new_path.exists() and ("." not in new_path_str):
-                return new_path
-            else:
-                return path2 + ": No such file or directory"
+            new_path_str = ""
+            for s in final_path:
+                if s.isalnum() or s == "." or s == "..":
+                    new_path_str = new_path_str + "/" + s
+                else:
+                    new_path_str = path2 + ": No such file or directory"
+            return new_path_str
         else:
-            return Path("/")
+            return "/"
 
 
 print(make_path(path1, path2))
+
