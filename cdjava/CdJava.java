@@ -1,6 +1,3 @@
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +14,9 @@ public class CdJava {
 
     List<String> parts = new ArrayList<String>();
 
+    /* Edits the final list of path pieces based on whether a piece is ".", "..",
+       "" (representing "/"), or a regular string
+    */
     while (breakPath.hasNext()) {
       String part = breakPath.next();
       for (int i = 0; i < parts.size(); i++) {
@@ -44,43 +44,45 @@ public class CdJava {
           break;
       }
     }
+    breakPath.close();
 
-    String finalPath = "";
+    /* Checks whether or not a path consists of valid characters and combines all the parts in the
+       the List parts into a new path or an error message
+     */
+    String finalPath = "/";
     if (parts.size() == 0) {
       finalPath = "/";
     }
     else if (parts.size() == 1) {
-      finalPath = parts.get(0);
+      finalPath = finalPath + parts.get(0);
     }
     else {
-      finalPath = parts.get(0);
+      finalPath = finalPath + parts.get(0);
       for (int i = 1; i < parts.size(); i++) {
-        finalPath = finalPath + "/" + parts.get(i);
+        String p = parts.get(i);
+        boolean isValid = p.chars().allMatch(Character::isLetterOrDigit) || p.equals("..")
+            || p.equals(".");
+        if (isValid) {
+          finalPath = finalPath + "/" + p;
+        }
+        else {
+          finalPath = path2 + ": No such file or directory";
+          break;
+        }
       }
     }
 
     return finalPath;
   }
 
-  // Checks if the file path exists an returns an error message if not
-  protected String makePath(String pathString, String path2) {
-    Path newPath = Paths.get(pathString);
-    if (Files.exists(newPath)) {
-      return newPath.toString();
-    }
-    else {
-      return path2 + ": No such file or directory";
-    }
-  }
-
   public static void main(String[] args) {
     Scanner scanInput = new Scanner(System.in);
     String path1 = scanInput.next();
     String path2 = scanInput.next();
+    scanInput.close();
 
     CdJava cj = new CdJava();
-    String pathString = cj.makeString(path1, path2);
-    String finalString = cj.makePath(pathString, path2);
+    String finalString = cj.makeString(path1, path2);
     System.out.println(finalString);
   }
 }
