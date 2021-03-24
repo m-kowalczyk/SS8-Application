@@ -13,3 +13,7 @@ assert make_path("/abc/def", "/////") == "/"
 assert make_path("/abc/def", "../gh///../klm/.") == "/abc/klm"
 assert make_path("/aaa/bbb/ccc", "ddd") == "/aaa/bbb/ccc/ddd"
 assert make_path("/a/b/c", "d") == "/a/b/c/d"
+assert make_path("/a/b", "/d/f") == "/d/f"
+assert make_path("/a/b/c", "d/") == "/a/b/c/d"
+assert make_path("/a/b/c", "/d/e/") == "/d/e"
+
