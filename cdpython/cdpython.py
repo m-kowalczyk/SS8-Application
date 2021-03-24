@@ -2,7 +2,15 @@ def make_path(p1, p2):
     # creates a list of the elements in the new path based on p1 and p2,
     # where "." means staying in the current directory, ".." means returning
     # to the previous directory, and "/" means going to the root directory
-    parts = (p1 + "/" + p2).split("/")
+    if p2[0] == '/' and p2[-1] == '/':
+        parts = p2[:(len(p2) - 1)].split("/")
+    elif p2[0] == '/':
+        parts = p2.split("/")
+    elif p2[-1] == '/':
+        parts = (p1 + "/" + p2[:(len(p2) - 1)]).split("/")
+    else:
+        parts = (p1 + "/" + p2).split("/")
+
     final_path = []
     for p in parts:
         if p == "":
