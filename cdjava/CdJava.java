@@ -9,7 +9,21 @@ public class CdJava {
      and path2 which represents the new directory
    */
   protected String makeString(String path1, String path2) {
-    Scanner breakPath = new Scanner(path1 + "/" + path2);
+    Character first = path2.charAt(0);
+    Character last = path2.charAt(path2.length() - 1);
+    Scanner breakPath;
+    if (first.equals('/') && last.equals('/')) {
+      breakPath = new Scanner(path2.substring(0, path2.length() - 1));
+    }
+    else if (first.equals('/')) {
+      breakPath = new Scanner(path2);
+    }
+    else if (last.equals('/')) {
+      breakPath = new Scanner(path1 + "/" + path2.substring(0, path2.length() - 1));
+    }
+    else {
+      breakPath = new Scanner(path1 + "/" + path2);
+    }
     breakPath.useDelimiter("/");
 
     List<String> parts = new ArrayList<String>();
