@@ -19,5 +19,8 @@ public class CdJavaTest {
     assertEquals("/abc/klm", cj.makeString("/abc/def", "../gh///../klm/."));
     assertEquals("/aaa/bbb/ccc/ddd", cj.makeString("/aaa/bbb/ccc", "ddd"));
     assertEquals("/a/b/c/d", cj.makeString("/a/b/c", "d"));
+    assertEquals("/d/f", cj.makeString("/a/b", "/d/f"));
+    assertEquals("/a/b/c/d", cj.makeString("/a/b/c", "d/"));
+    assertEquals("/d/e", cj.makeString("/a/b/c", "/d/e/"));
   }
 }
